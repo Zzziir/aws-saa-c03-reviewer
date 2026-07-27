@@ -1,26 +1,244 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+/* Base UI custom variants (data-horizontal, data-open, data-checked, …) that
+   the shadcn-on-Base-UI components rely on. Required for e.g. the Slider track
+   to have a height. Adds no color tokens, so it won't affect the theme below. */
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-inter), sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* brand + semantic */
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-tint: var(--brand-tint);
+  --color-ink: var(--ink);
+  --color-solid: var(--solid);
+  --color-solid-foreground: var(--solid-foreground);
+  --color-ok: var(--ok);
+  --color-ok-tint: var(--ok-tint);
+  --color-ok-fill: var(--ok-fill);
+  --color-no: var(--no);
+  --color-no-tint: var(--no-tint);
+  --color-no-fill: var(--no-fill);
+  --color-skip: var(--skip);
+  --color-faint: var(--faint);
+  --color-domain-secure: var(--domain-secure);
+  --color-domain-resilient: var(--domain-resilient);
+  --color-domain-performance: var(--domain-performance);
+  --color-domain-cost: var(--domain-cost);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.75rem;
+
+  --background: #f3f5f7;
+  --foreground: #1b2530;
+  --card: #ffffff;
+  --card-foreground: #1b2530;
+  --popover: #ffffff;
+  --popover-foreground: #1b2530;
+
+  --primary: #131a24;
+  --primary-foreground: #ffffff;
+  --secondary: #eef1f5;
+  --secondary-foreground: #1b2530;
+  --muted: #eef1f5;
+  --muted-foreground: #67788c;
+  --accent: #eef1f5;
+  --accent-foreground: #131a24;
+  --destructive: #c93b4b;
+  --border: #e2e8ef;
+  --input: #e2e8ef;
+  --ring: #ff9900;
+
+  --ink: #131a24;
+  --faint: #93a2b4;
+  --solid: #131a24;
+  --solid-foreground: #ffffff;
+
+  --brand: #ff9900;
+  --brand-foreground: #131a24;
+  --brand-deep: #e07b00;
+  --brand-tint: #fff4e2;
+
+  --ok: #1f9d62;
+  --ok-tint: #eaf7f0;
+  --ok-fill: #a8dec2;
+  --no: #c93b4b;
+  --no-tint: #fdeeef;
+  --no-fill: #f3b0b0;
+  --skip: #8b9aac;
+
+  --domain-secure: #e07b00;
+  --domain-resilient: #2f7fd4;
+  --domain-performance: #7a5af0;
+  --domain-cost: #1f9d62;
+}
+
+.dark {
+  --background: #0e141b;
+  --foreground: #e8edf3;
+  --card: #151e28;
+  --card-foreground: #e8edf3;
+  --popover: #151e28;
+  --popover-foreground: #e8edf3;
+
+  --primary: #ff9900;
+  --primary-foreground: #131a24;
+  --secondary: #1e2a38;
+  --secondary-foreground: #e8edf3;
+  --muted: #1e2a38;
+  --muted-foreground: #93a2b4;
+  --accent: #1e2a38;
+  --accent-foreground: #e8edf3;
+  --destructive: #e5606f;
+  --border: #263544;
+  --input: #263544;
+  --ring: #ff9900;
+
+  --ink: #131a24;
+  --faint: #6a7c90;
+  --solid: #2c3b4d;
+  --solid-foreground: #ffffff;
+
+  --brand: #ff9900;
+  --brand-foreground: #131a24;
+  --brand-deep: #ffab33;
+  --brand-tint: #2a2113;
+
+  --ok: #3cc07f;
+  --ok-tint: #14261d;
+  --ok-fill: #1f5a3d;
+  --no: #e5606f;
+  --no-tint: #2a1518;
+  --no-fill: #6a2a30;
+  --skip: #6a7c90;
+
+  --domain-secure: #ffab33;
+  --domain-resilient: #57a2ec;
+  --domain-performance: #9a80f5;
+  --domain-cost: #3cc07f;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11", "ss01";
+  }
+  html {
+    @apply font-sans antialiased;
+    -webkit-text-size-adjust: 100%;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--brand) 28%, transparent);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- motion primitives (short, purposeful; from Emil's framework) ---- */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes timer-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.42s var(--ease-out) both;
+}
+.animate-fade-in {
+  animation: fade-in 0.3s ease both;
+}
+.animate-pop-in {
+  animation: pop-in 0.24s var(--ease-out) both;
+}
+
+/* Staggered entrance for lists/grids: set style={{ '--i': index }} */
+.stagger > * {
+  animation: fade-up 0.42s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
