@@ -16,6 +16,7 @@ import {
   Trophy,
 } from "lucide-react";
 import { useStore, useHydrated } from "@/lib/store";
+import { useAuth } from "@/components/auth/auth-provider";
 import { computeAnalytics } from "@/lib/analytics";
 import { QUESTIONS, PASS_PCT, DOMAIN_META } from "@/lib/questions";
 import { formatDuration, formatDate } from "@/lib/session-utils";
@@ -24,16 +25,37 @@ import { Donut } from "@/components/charts/donut";
 import { cn } from "@/lib/utils";
 import type { SessionConfig } from "@/lib/types";
 
-function greeting() {
-  const h = new Date().getHours();
-  if (h < 5) return "Burning the midnight oil";
-  if (h < 12) return "Good morning";
-  if (h < 18) return "Good afternoon";
-  return "Good evening";
+/** Current hour (0–23) in Philippine time (UTC+8), regardless of device tz. */
+function manilaHour(): number {
+  return (
+    Number(
+      new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Manila",
+        hour: "numeric",
+        hour12: false,
+      }).format(new Date()),
+    ) % 24
+  );
+}
+
+/** Time-of-day greeting, personalized with the user's first name when known. */
+function greeting(name: string): string {
+  const h = manilaHour();
+  const who = name ? `, ${name}` : "";
+  if (h >= 5 && h < 12) return `Good morning${who}.`;
+  if (h >= 12 && h < 18) return `Lovely afternoon${who}.`;
+  if (h >= 18 && h < 22) return `Good evening${who}.`;
+  return name
+    ? `Working late in the evening, eh ${name}?`
+    : "Working late in the evening?";
 }
 
 export function HomeView() {
   const router = useRouter();
+  const { user } = useAuth();
+  const firstName = (
+    (user?.user_metadata?.first_name as string | undefined) ?? ""
+  ).trim();
   const hydrated = useHydrated();
   const history = useStore((s) => s.history);
   const active = useStore((s) => s.active);
@@ -71,7 +93,7 @@ export function HomeView() {
               SAA-C03 · Solutions Architect Associate
             </p>
             <h1 className="mt-2 font-display text-3xl font-bold leading-tight sm:text-[34px]">
-              {greeting()}, Lance.
+              {greeting(firstName)}
             </h1>
             <p className="mt-2 text-[15px] leading-relaxed text-white/70">
               {ready === null

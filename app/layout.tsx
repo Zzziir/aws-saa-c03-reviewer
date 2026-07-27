@@ -5,6 +5,8 @@ import { SiteNav } from "@/components/layout/site-nav";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AuthProvider } from "@/components/auth/auth-provider";
+import { createClient } from "@/lib/supabase/server";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -39,9 +41,14 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <html
       lang="en"
@@ -50,11 +57,13 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background">
         <ThemeProvider>
-          <TooltipProvider>
-            <SiteNav />
-            <main className="flex-1 pb-24 md:pb-16">{children}</main>
-            <Toaster position="top-center" richColors closeButton />
-          </TooltipProvider>
+          <AuthProvider initialUser={user}>
+            <TooltipProvider>
+              <SiteNav />
+              <main className="flex-1 pb-24 md:pb-16">{children}</main>
+              <Toaster position="top-center" richColors closeButton />
+            </TooltipProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

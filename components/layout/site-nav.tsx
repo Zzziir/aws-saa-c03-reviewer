@@ -1,7 +1,8 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Home,
   BookOpen,
@@ -9,8 +10,19 @@ import {
   History,
   Bookmark,
   Library,
+  LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { ThemeToggle } from "./theme-toggle";
 
 const NAV = [
@@ -54,10 +66,25 @@ function BrandMark() {
   );
 }
 
+// Auth screens render standalone, without the app nav.
+const CHROMELESS = ["/session", "/login", "/signup", "/auth"];
+
 export function SiteNav() {
   const pathname = usePathname();
-  // The running session takes over the screen with its own chrome.
-  if (pathname.startsWith("/session")) return null;
+  const router = useRouter();
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
+  const [signingOut, setSigningOut] = React.useState(false);
+
+  if (CHROMELESS.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
+    return null;
+  }
+
+  async function signOut() {
+    setSigningOut(true);
+    await getSupabaseBrowserClient().auth.signOut();
+    router.replace("/login");
+    router.refresh();
+  }
 
   return (
     <>
@@ -94,7 +121,18 @@ export function SiteNav() {
               );
             })}
           </nav>
-          <ThemeToggle className="ml-auto md:ml-1" />
+          <div className="ml-auto flex items-center gap-0.5 md:ml-1">
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setConfirmOpen(true)}
+              aria-label="Sign out"
+              className="text-white/65 hover:bg-white/10 hover:text-white"
+            >
+              <LogOut className="size-4" />
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -123,6 +161,36 @@ export function SiteNav() {
           )}
         </div>
       </nav>
+
+      {/* Sign-out confirmation */}
+      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Sign out?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You&apos;ll need to sign back in to access your progress. Your data
+              is saved to your account.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setConfirmOpen(false)}
+              disabled={signingOut}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={signOut}
+              disabled={signingOut}
+            >
+              <LogOut className="size-4" />
+              Sign out
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
