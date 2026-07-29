@@ -122,10 +122,10 @@ export function QuestionDrawer({
                       <span
                         className={cn(
                           "mt-0.5 line-clamp-2 text-[13px] leading-snug",
-                          answered ? "text-foreground/90" : "text-muted-foreground",
+                          answered ? "text-foreground/90" : "text-faint",
                         )}
                       >
-                        {q?.question ?? "…"}
+                        {answered ? (q?.question ?? "…") : "—"}
                       </span>
                     </span>
                   </button>
