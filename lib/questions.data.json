@@ -218,7 +218,8 @@
       "Automatic rotation of a customer managed key occurs every year and retains old key material for decrypting older ciphertext",
       "KMS keys can be exported in plaintext for use in on-premises systems",
       "A key policy is required on every KMS key and is the primary means of controlling access to it",
-      "AWS managed keys can have their key policy fully edited by the customer"
+      "AWS managed keys can have their key policy fully edited by the customer",
+      "A single KMS key can encrypt objects larger than 4 KB directly without envelope encryption"
     ],
     "answer": [
       0,
@@ -431,7 +432,8 @@
       "An execution role in Account A granting s3:PutObject on the Account B bucket",
       "A bucket policy in Account B allowing the Account A Lambda execution role",
       "A VPC peering connection between the two accounts",
-      "An SCP in Account B allowing s3:PutObject"
+      "An SCP in Account B allowing s3:PutObject",
+      "A NAT gateway in Account A to reach the S3 endpoint"
     ],
     "answer": [
       0,
@@ -539,7 +541,8 @@
       "An AWS Config rule that flags instances allowing IMDSv1",
       "A condition key in an IAM or service control policy requiring ec2:MetadataHttpTokens to equal required",
       "An Amazon Inspector assessment",
-      "A NACL rule blocking 169.254.169.254"
+      "A NACL rule blocking 169.254.169.254",
+      "An AWS WAF rule blocking requests to the instance metadata endpoint"
     ],
     "answer": [
       0,
@@ -602,7 +605,8 @@
       "Enable encryption at rest when creating the file system using a KMS key",
       "Mount the file system using the EFS mount helper with the TLS option",
       "Enable S3 default encryption on the backing bucket",
-      "Place the mount targets in a private subnet"
+      "Place the mount targets in a private subnet",
+      "Enable AWS Backup on the file system"
     ],
     "answer": [
       0,
@@ -650,7 +654,8 @@
       "Enable CloudTrail log file validation",
       "Store logs in an S3 bucket with Object Lock in compliance mode and a five-year retention",
       "Enable CloudWatch Logs Insights on the trail",
-      "Turn on S3 Transfer Acceleration for the log bucket"
+      "Turn on S3 Transfer Acceleration for the log bucket",
+      "Store the logs in S3 Standard-IA to reduce storage cost"
     ],
     "answer": [
       0,
@@ -683,7 +688,8 @@
       "Network ACL deny rule with a lower rule number than any allow",
       "AWS Network Firewall stateful rule group dropping the source",
       "Security group deny rule",
-      "Route table blackhole entry for the address"
+      "Route table blackhole entry for the address",
+      "An IAM policy that denies the source principal"
     ],
     "answer": [
       0,
@@ -761,7 +767,8 @@
       "The SSM Agent must be installed and the instance must have an IAM role with the SSM managed policy",
       "VPC interface endpoints for ssm, ssmmessages, and ec2messages must be reachable, or outbound internet access must exist",
       "Inbound port 22 must be open in the security group",
-      "An Elastic IP must be assigned to the instance"
+      "An Elastic IP must be assigned to the instance",
+      "The instance must be placed in a public subnet with an internet gateway"
     ],
     "answer": [
       0,
@@ -1019,7 +1026,8 @@
       "Storage is replicated six ways across three Availability Zones",
       "Aurora Replicas can be promoted automatically on failure of the writer",
       "Aurora writes are acknowledged only after all six copies commit",
-      "Aurora requires manual snapshots for durability"
+      "Aurora requires manual snapshots for durability",
+      "Durability requires enabling Multi-AZ as a separate paid option"
     ],
     "answer": [
       0,
@@ -1142,7 +1150,8 @@
       "Deploying each tier in its own Auto Scaling group across multiple AZs",
       "Running all tiers on a single large EC2 instance",
       "Using SQS queues between tiers to absorb downstream failures",
-      "Using a single shared database connection pool with no timeout"
+      "Using a single shared database connection pool with no timeout",
+      "Deploying all tiers into a single subnet for simpler routing"
     ],
     "answer": [
       0,
@@ -1250,7 +1259,8 @@
       "Handle the two-minute Spot interruption notice to checkpoint work and drain connections",
       "Use a diversified Auto Scaling group with multiple instance types and AZs using capacity-optimized allocation",
       "Request a single instance type in a single AZ to keep the pool consistent",
-      "Disable health checks to avoid premature termination"
+      "Disable health checks to avoid premature termination",
+      "Storing all working state on the local instance store for speed"
     ],
     "answer": [
       0,
@@ -1298,7 +1308,8 @@
       "It scales capacity in fine-grained ACU increments in response to load, including during active connections",
       "It supports Multi-AZ configurations and read replicas",
       "It requires the database to be paused between requests",
-      "It only supports the PostgreSQL engine"
+      "It only supports the PostgreSQL engine",
+      "It bills per request like DynamoDB on-demand rather than by capacity"
     ],
     "answer": [
       0,
@@ -1406,7 +1417,8 @@
       "io1",
       "io2",
       "gp3",
-      "st1"
+      "st1",
+      "gp3"
     ],
     "answer": [
       0,
@@ -1469,7 +1481,8 @@
       "Circuit breaker with timeouts on all downstream calls",
       "Asynchronous invocation via SQS or EventBridge where a synchronous response is not required",
       "Unlimited retries with no backoff",
-      "Sharing one connection pool across all microservices"
+      "Sharing one connection pool across all microservices",
+      "Increasing the synchronous call timeout to several minutes"
     ],
     "answer": [
       0,
@@ -1547,7 +1560,8 @@
       "The subnet CIDR provides enough usable IP addresses, remembering AWS reserves five per subnet",
       "Instance type availability in each selected Availability Zone",
       "That the subnet has an Elastic IP attached",
-      "That the subnet uses a /32 CIDR"
+      "That the subnet uses a /32 CIDR",
+      "That the subnet is associated with an internet gateway route for every instance"
     ],
     "answer": [
       0,
@@ -1655,7 +1669,8 @@
       "AWS provisions two tunnels per VPN connection to different endpoints",
       "Configuring a second customer gateway device with its own VPN connection",
       "Attaching a second Elastic IP to the virtual private gateway",
-      "Using a single tunnel with BGP"
+      "Using a single tunnel with BGP",
+      "Enabling S3 Cross-Region Replication for the VPN configuration"
     ],
     "answer": [
       0,
@@ -1703,7 +1718,8 @@
       "ApproximateNumberOfMessagesVisible on the SQS queue",
       "A custom backlog per instance metric computed from queue depth divided by instance count",
       "Average network out on the load balancer",
-      "The number of S3 objects in a bucket"
+      "The number of S3 objects in a bucket",
+      "Average CPU utilization reported by the load balancer"
     ],
     "answer": [
       0,
@@ -1811,7 +1827,8 @@
       "Use multiple prefixes, since S3 supports 5,500 GET requests per second per prefix",
       "Place a CloudFront distribution in front of the bucket",
       "Enable S3 Versioning",
-      "Switch the storage class to Glacier Instant Retrieval"
+      "Switch the storage class to Glacier Instant Retrieval",
+      "Enable Requester Pays on the bucket"
     ],
     "answer": [
       0,
@@ -1844,7 +1861,8 @@
       "A cluster placement group",
       "An Elastic Fabric Adapter on supported instance types",
       "A spread placement group across three AZs",
-      "Instances in separate Regions connected by VPC peering"
+      "Instances in separate Regions connected by VPC peering",
+      "A partition placement group spanning multiple Availability Zones"
     ],
     "answer": [
       0,
@@ -1907,7 +1925,8 @@
       "Configure provisioned concurrency",
       "Reduce the deployment package size and avoid heavy initialization in the handler",
       "Increase the function timeout",
-      "Move the function into a VPC"
+      "Move the function into a VPC",
+      "Increase the number of environment variables to preload data"
     ],
     "answer": [
       0,
@@ -2045,7 +2064,8 @@
       "Choosing an appropriate distribution style such as KEY on the common join column",
       "Defining sort keys aligned with frequent range-restricted predicates",
       "Storing all data in a single VARCHAR column",
-      "Disabling compression encodings"
+      "Disabling compression encodings",
+      "Using the ALL distribution style on a very large fact table"
     ],
     "answer": [
       0,
@@ -2153,7 +2173,8 @@
       "Move to an instance type with higher baseline network bandwidth and enable enhanced networking",
       "Enable an Elastic Network Adapter with SR-IOV support on supported instances",
       "Attach additional EBS volumes",
-      "Increase the ALB idle timeout"
+      "Increase the ALB idle timeout",
+      "Attaching additional EBS volumes to spread the load"
     ],
     "answer": [
       0,
@@ -2201,7 +2222,8 @@
       "A cache can be enabled per stage with a configurable size and TTL",
       "Cached responses reduce calls to the backend integration and lower latency",
       "Caching is only available for WebSocket APIs",
-      "Enabling caching is free"
+      "Enabling caching is free",
+      "Cache entries are shared across all stages of the API"
     ],
     "answer": [
       0,
@@ -2249,7 +2271,8 @@
       "Use multipart upload with parallel part uploads",
       "Enable S3 Transfer Acceleration if the client is far from the bucket Region",
       "Use a single PUT request",
-      "Enable S3 Versioning"
+      "Enable S3 Versioning",
+      "Compress the file into one object and upload it over a single connection"
     ],
     "answer": [
       0,
@@ -2282,7 +2305,8 @@
       "Provision the GSI with its own capacity sufficient for its access pattern, since throttling on a GSI can throttle table writes",
       "Project only the attributes actually required into the index to reduce write amplification",
       "Use the same partition key for the GSI as the base table",
-      "Enable DynamoDB Streams"
+      "Enable DynamoDB Streams",
+      "Enable DAX in front of the table"
     ],
     "answer": [
       0,
@@ -2345,7 +2369,8 @@
       "Put a CloudFront distribution in front of the bucket",
       "Cache the objects in ElastiCache or a local application cache",
       "Enable S3 Object Lock",
-      "Switch to S3 One Zone-IA"
+      "Switch to S3 One Zone-IA",
+      "Enable S3 Versioning to keep hot copies of the objects"
     ],
     "answer": [
       0,
@@ -2423,7 +2448,8 @@
       "IOPS and throughput can be provisioned independently of volume size",
       "They provide a 3,000 IOPS and 125 MB/s baseline regardless of size",
       "Performance scales at 3 IOPS per GiB with burst credits",
-      "They are the only volume type supporting encryption"
+      "They are the only volume type supporting encryption",
+      "gp3 volumes cannot be used as boot volumes"
     ],
     "answer": [
       0,
@@ -2576,7 +2602,8 @@
       "AWS Compute Optimizer",
       "AWS Cost Explorer right-sizing recommendations",
       "Amazon Inspector",
-      "AWS Config"
+      "AWS Config",
+      "AWS X-Ray service maps"
     ],
     "answer": [
       0,
@@ -2594,7 +2621,8 @@
       "Transition objects to S3 Standard-IA after 30 days",
       "Transition objects to S3 Glacier Flexible Retrieval after 90 days",
       "Enable Transfer Acceleration",
-      "Enable Requester Pays"
+      "Enable Requester Pays",
+      "Enable S3 Versioning to reduce storage"
     ],
     "answer": [
       0,
@@ -2672,7 +2700,8 @@
       "A Convertible Reserved Instance can be exchanged for a different instance family, OS, or tenancy during its term",
       "A regional Reserved Instance provides Availability Zone flexibility but no capacity reservation",
       "A Standard Reserved Instance can be converted to a Convertible Reserved Instance at any time",
-      "Reserved Instances must be paid entirely upfront"
+      "Reserved Instances must be paid entirely upfront",
+      "Reserved Instances automatically apply across all AWS Regions"
     ],
     "answer": [
       0,
@@ -2765,7 +2794,8 @@
       "Set a retention period on log groups instead of keeping logs indefinitely",
       "Export older logs to S3 and query with Athena when needed",
       "Increase the log ingestion rate",
-      "Enable detailed monitoring on all instances"
+      "Enable detailed monitoring on all instances",
+      "Enable Container Insights on all clusters"
     ],
     "answer": [
       0,
@@ -2783,7 +2813,8 @@
       "A service control policy with a condition on ec2:InstanceType",
       "AWS Service Catalog products with preconfigured, approved CloudFormation templates",
       "AWS Budgets alerts only",
-      "Manual monthly bill review"
+      "Manual monthly bill review",
+      "Tagging instances with an approved flag after they launch"
     ],
     "answer": [
       0,
@@ -2801,7 +2832,8 @@
       "An hourly charge for each hour the load balancer runs",
       "Load Balancer Capacity Units based on new connections, active connections, processed bytes, and rule evaluations",
       "A per-target-group monthly fee",
-      "A charge per health check performed"
+      "A charge per health check performed",
+      "A one-time provisioning fee charged when the load balancer is created"
     ],
     "answer": [
       0,
@@ -2849,7 +2881,8 @@
       "Data transfer into AWS from the internet is generally free",
       "Data transfer between Availability Zones in the same Region incurs a charge in both directions",
       "All data transfer within a Region is free",
-      "Data transfer out to the internet is free up to 100 TB per month for every account"
+      "Data transfer out to the internet is free up to 100 TB per month for every account",
+      "Data transfer between Regions is always free"
     ],
     "answer": [
       0,
@@ -2882,7 +2915,8 @@
       "Use Fargate Spot for fault-tolerant tasks",
       "Use Compute Savings Plans, which apply to Fargate and Lambda as well as EC2",
       "Run every service on a dedicated always-on EC2 instance",
-      "Enable detailed monitoring on all tasks"
+      "Enable detailed monitoring on all tasks",
+      "Provisioning maximum capacity at all times to avoid scaling events"
     ],
     "answer": [
       0,
@@ -2960,7 +2994,8 @@
       "Release unassociated Elastic IP addresses, which are billed when not attached to a running instance",
       "Delete unattached EBS volumes and outdated snapshots after verifying they are not needed",
       "Keep all snapshots forever for safety",
-      "Leave idle load balancers running in case they are needed later"
+      "Leave idle load balancers running in case they are needed later",
+      "Retaining unused NAT gateways so they are ready when needed"
     ],
     "answer": [
       0,
@@ -3023,7 +3058,8 @@
       "Compact small files into larger objects, since Athena scans and lists more efficiently over fewer, larger files",
       "Convert the data to a columnar format such as Parquet and partition it",
       "Enable S3 Versioning on the bucket",
-      "Move each file to Glacier Deep Archive"
+      "Move each file to Glacier Deep Archive",
+      "Store each small file as its own DynamoDB item"
     ],
     "answer": [
       0,
@@ -3101,7 +3137,8 @@
       "Store the data in S3 and query in place with Athena rather than keeping it in a running database",
       "Use S3 Intelligent-Tiering so rarely accessed objects move to cheaper tiers automatically",
       "Keep the data in a provisioned Redshift cluster running continuously",
-      "Replicate the data to three Regions for redundancy"
+      "Replicate the data to three Regions for redundancy",
+      "Loading the data into an always-on RDS instance for querying"
     ],
     "answer": [
       0,
@@ -7613,5 +7650,635 @@
     "answer": 0,
     "explanation": "An S3 Lifecycle expiration rule automatically deletes objects after 90 days, eliminating storage cost for data that no longer has value. Transitioning to Standard or enabling versioning would maintain or increase cost.",
     "keyTakeaway": "Use S3 Lifecycle expiration to delete valueless data and stop paying to store it."
+  },
+  {
+    "id": 501,
+    "domain": "secure",
+    "difficulty": "medium",
+    "question": "Which three actions help protect the AWS account root user? (Choose three.)",
+    "options": [
+      "Use IAM roles or IAM Identity Center for day-to-day access instead of root",
+      "Share the root credentials with the operations team",
+      "Use the root user for all daily deployments",
+      "Avoid creating root access keys and delete any that exist",
+      "Enable multi-factor authentication (MFA) on the root user",
+      "Create root access keys for automation scripts"
+    ],
+    "answer": [
+      0,
+      3,
+      4
+    ],
+    "explanation": "Protecting root means enabling MFA, not creating (and removing) root access keys, and using least-privilege IAM identities for everyday work. Creating root keys, sharing root, or using it daily all increase risk.",
+    "keyTakeaway": "Harden root with MFA, no access keys, and delegated IAM identities."
+  },
+  {
+    "id": 502,
+    "domain": "secure",
+    "difficulty": "medium",
+    "question": "Which three configurations help protect sensitive data stored in an Amazon S3 bucket? (Choose three.)",
+    "options": [
+      "Enable S3 Transfer Acceleration",
+      "Make the bucket public but use an obscure bucket name",
+      "Enable default encryption with SSE-KMS",
+      "Enable Requester Pays on the bucket",
+      "Enable S3 Block Public Access at the bucket or account level",
+      "Add a bucket policy that denies requests where aws:SecureTransport is false"
+    ],
+    "answer": [
+      2,
+      4,
+      5
+    ],
+    "explanation": "Default encryption, Block Public Access, and denying non-HTTPS requests protect data at rest and in transit and prevent exposure. Transfer Acceleration and Requester Pays are unrelated to protection, and obscurity is not security.",
+    "keyTakeaway": "Encrypt, block public access, and enforce HTTPS to protect S3 data."
+  },
+  {
+    "id": 503,
+    "domain": "secure",
+    "difficulty": "medium",
+    "question": "Which three services or features can filter or inspect network traffic within a VPC? (Choose three.)",
+    "options": [
+      "AWS Network Firewall",
+      "Security groups",
+      "Network ACLs",
+      "Amazon Route 53 records",
+      "S3 bucket policies",
+      "IAM identity policies"
+    ],
+    "answer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Security groups (stateful), network ACLs (stateless), and AWS Network Firewall (stateful, managed) all filter or inspect VPC traffic. IAM, Route 53, and bucket policies control identity, DNS, and object access, not VPC network flow.",
+    "keyTakeaway": "Security groups, NACLs, and Network Firewall control VPC traffic."
+  },
+  {
+    "id": 504,
+    "domain": "secure",
+    "difficulty": "hard",
+    "question": "Which three approaches encrypt data at rest on AWS? (Choose three.)",
+    "options": [
+      "Enable EBS volume encryption with a KMS key",
+      "Add an HTTPS listener with an ACM certificate to an ALB",
+      "Enable SSE-KMS on an S3 bucket",
+      "Serve content through CloudFront with signed URLs",
+      "Enable encryption at rest on an RDS database with KMS",
+      "Attach a restrictive security group to the instance"
+    ],
+    "answer": [
+      0,
+      2,
+      4
+    ],
+    "explanation": "SSE-KMS, EBS encryption, and RDS encryption all protect data at rest. An HTTPS listener protects data in transit, security groups filter traffic, and signed URLs control access, none of which encrypt stored data.",
+    "keyTakeaway": "SSE-KMS, EBS, and RDS encryption protect data at rest; TLS protects transit."
+  },
+  {
+    "id": 505,
+    "domain": "secure",
+    "difficulty": "medium",
+    "question": "Which three AWS services are primarily used to detect security or compliance issues? (Choose three.)",
+    "options": [
+      "Amazon CloudFront",
+      "Amazon GuardDuty",
+      "Amazon ElastiCache",
+      "AWS Security Hub",
+      "Amazon Route 53",
+      "Amazon Inspector"
+    ],
+    "answer": [
+      1,
+      3,
+      5
+    ],
+    "explanation": "GuardDuty (threat detection), Inspector (vulnerability scanning), and Security Hub (aggregated posture) are security detection services. CloudFront, Route 53, and ElastiCache are delivery, DNS, and caching services.",
+    "keyTakeaway": "GuardDuty, Inspector, and Security Hub detect security issues."
+  },
+  {
+    "id": 506,
+    "domain": "secure",
+    "difficulty": "hard",
+    "question": "Which three practices follow least privilege when granting a third party access to your AWS account? (Choose three.)",
+    "options": [
+      "Provide the account root credentials",
+      "Grant only the specific actions and resources they need",
+      "Have them assume an IAM role via STS for temporary credentials",
+      "Share long-term IAM access keys with the third party",
+      "Require an external ID on the role trust policy to prevent confused-deputy attacks",
+      "Make the required resources public for convenience"
+    ],
+    "answer": [
+      1,
+      2,
+      4
+    ],
+    "explanation": "Cross-account roles with STS, scoped permissions, and an external ID implement secure least-privilege third-party access. Sharing keys or root, or making resources public, are insecure.",
+    "keyTakeaway": "Use scoped cross-account roles with an external ID for third parties."
+  },
+  {
+    "id": 507,
+    "domain": "secure",
+    "difficulty": "medium",
+    "question": "Which three statements about AWS KMS are correct? (Choose three.)",
+    "options": [
+      "KMS keys can be exported in plaintext for on-premises use",
+      "A key policy is the primary resource-based control over a KMS key",
+      "KMS integrates with services like S3, EBS, and RDS for server-side encryption",
+      "KMS issues public TLS certificates for websites",
+      "Customer managed keys support automatic annual rotation",
+      "KMS stores the encrypted objects themselves"
+    ],
+    "answer": [
+      1,
+      2,
+      4
+    ],
+    "explanation": "Key policies control access, KMS integrates broadly for SSE, and CMKs support automatic yearly rotation. KMS keys cannot be exported in plaintext, KMS does not store objects, and TLS certificates come from ACM.",
+    "keyTakeaway": "KMS controls keys via key policies, integrates for SSE, and rotates CMKs yearly."
+  },
+  {
+    "id": 508,
+    "domain": "secure",
+    "difficulty": "medium",
+    "question": "Which three options let users access AWS without storing long-term access keys? (Choose three.)",
+    "options": [
+      "SAML 2.0 federation using AWS STS",
+      "Sharing one IAM user among the whole team",
+      "Embedding access keys in the application code",
+      "IAM Identity Center with an external identity provider",
+      "Creating an IAM user with access keys for each person",
+      "Amazon Cognito identity pools issuing temporary credentials"
+    ],
+    "answer": [
+      0,
+      3,
+      5
+    ],
+    "explanation": "Identity Center, SAML federation, and Cognito identity pools all issue temporary credentials from existing identities. Per-user keys, embedded keys, and shared users all rely on long-term credentials.",
+    "keyTakeaway": "Federate via Identity Center, SAML, or Cognito to avoid long-term keys."
+  },
+  {
+    "id": 509,
+    "domain": "secure",
+    "difficulty": "hard",
+    "question": "Which three actions help satisfy audit and compliance requirements for an AWS account? (Choose three.)",
+    "options": [
+      "Enable S3 Transfer Acceleration on the log bucket",
+      "Store audit logs in S3 with Object Lock in compliance mode",
+      "Keep audit logs only on the instances that generate them",
+      "Use AWS Config with rules to track and evaluate resource configurations",
+      "Enable CloudTrail (ideally an organization trail) to record API activity",
+      "Disable logging in production to reduce cost"
+    ],
+    "answer": [
+      1,
+      3,
+      4
+    ],
+    "explanation": "CloudTrail, AWS Config, and immutable Object Lock logging provide an auditable, tamper-resistant record. Disabling logging, local-only logs, and Transfer Acceleration do not support compliance.",
+    "keyTakeaway": "CloudTrail + Config + immutable S3 logs support audit and compliance."
+  },
+  {
+    "id": 510,
+    "domain": "resilient",
+    "difficulty": "medium",
+    "question": "Which three actions improve the availability of a web application? (Choose three.)",
+    "options": [
+      "Assign an Elastic IP to each instance for redundancy",
+      "Deploy all instances in one Availability Zone",
+      "Run the application on a single large EC2 instance",
+      "Place the instances in an Auto Scaling group",
+      "Distribute traffic with an Elastic Load Balancer using health checks",
+      "Deploy instances across multiple Availability Zones"
+    ],
+    "answer": [
+      3,
+      4,
+      5
+    ],
+    "explanation": "Multi-AZ deployment, Auto Scaling, and an ELB with health checks provide redundancy and automatic recovery. A single instance, a single AZ, or Elastic IPs do not deliver high availability.",
+    "keyTakeaway": "Multi-AZ + Auto Scaling + ELB health checks yield high availability."
+  },
+  {
+    "id": 511,
+    "domain": "resilient",
+    "difficulty": "medium",
+    "question": "Which three services help decouple components of a distributed application? (Choose three.)",
+    "options": [
+      "Amazon SQS",
+      "Amazon Route 53",
+      "Amazon EBS",
+      "Amazon SNS",
+      "Amazon CloudFront",
+      "Amazon EventBridge"
+    ],
+    "answer": [
+      0,
+      3,
+      5
+    ],
+    "explanation": "SQS (queues), SNS (pub/sub), and EventBridge (event routing) decouple producers from consumers. CloudFront, Route 53, and EBS are content delivery, DNS, and block storage.",
+    "keyTakeaway": "SQS, SNS, and EventBridge decouple application components."
+  },
+  {
+    "id": 512,
+    "domain": "resilient",
+    "difficulty": "medium",
+    "question": "Which three are recognized AWS disaster recovery strategies? (Choose three.)",
+    "options": [
+      "Deleting backups to save space",
+      "Pilot light",
+      "Warm standby",
+      "Vertical scaling of one instance",
+      "Backup and restore",
+      "Single-AZ deployment"
+    ],
+    "answer": [
+      1,
+      2,
+      4
+    ],
+    "explanation": "Backup and restore, pilot light, and warm standby (along with multi-site active-active) are the recognized DR strategies with increasing cost and decreasing RTO/RPO. The others are not DR strategies.",
+    "keyTakeaway": "Backup/restore, pilot light, and warm standby are core DR strategies."
+  },
+  {
+    "id": 513,
+    "domain": "resilient",
+    "difficulty": "medium",
+    "question": "Which three actions increase the durability and recoverability of data? (Choose three.)",
+    "options": [
+      "Keep a single copy in a single Availability Zone",
+      "Enable S3 Versioning to preserve previous object versions",
+      "Enable S3 Cross-Region Replication",
+      "Use AWS Backup with a retention policy across services",
+      "Store the only copy of data on an instance store volume",
+      "Disable snapshots to reduce storage cost"
+    ],
+    "answer": [
+      1,
+      2,
+      3
+    ],
+    "explanation": "Versioning, cross-Region replication, and centralized backups protect against loss and enable recovery. Instance store is ephemeral, disabling snapshots removes recovery, and single-copy/single-AZ is fragile.",
+    "keyTakeaway": "Versioning, replication, and managed backups protect data durability."
+  },
+  {
+    "id": 514,
+    "domain": "resilient",
+    "difficulty": "medium",
+    "question": "Which three are valid Amazon EC2 Auto Scaling scaling approaches? (Choose three.)",
+    "options": [
+      "DNS-weighted scaling",
+      "Geolocation scaling",
+      "Scheduled scaling",
+      "Storage-tier scaling",
+      "Target tracking scaling",
+      "Step scaling"
+    ],
+    "answer": [
+      2,
+      4,
+      5
+    ],
+    "explanation": "Target tracking, step scaling, and scheduled scaling are the Auto Scaling policy types. The others are not EC2 Auto Scaling mechanisms.",
+    "keyTakeaway": "Auto Scaling supports target tracking, step, and scheduled policies."
+  },
+  {
+    "id": 515,
+    "domain": "resilient",
+    "difficulty": "hard",
+    "question": "Which three actions improve the resilience of an Amazon RDS database? (Choose three.)",
+    "options": [
+      "Enable Multi-AZ for automatic failover",
+      "Create read replicas to offload and, if needed, promote",
+      "Run the database in a single Availability Zone",
+      "Enable automated backups and copy snapshots to another Region",
+      "Store the database files on instance store",
+      "Disable automated backups to save storage"
+    ],
+    "answer": [
+      0,
+      1,
+      3
+    ],
+    "explanation": "Multi-AZ, read replicas, and cross-Region backup copies improve availability and recoverability. Disabling backups, single-AZ, and instance store all reduce resilience.",
+    "keyTakeaway": "Multi-AZ, read replicas, and cross-Region backups make RDS resilient."
+  },
+  {
+    "id": 516,
+    "domain": "resilient",
+    "difficulty": "hard",
+    "question": "Which three practices improve the reliability of an SQS-based processing system? (Choose three.)",
+    "options": [
+      "Hold messages only in application memory",
+      "Disable retries to avoid duplicate work",
+      "Run consumers across multiple Availability Zones",
+      "Run a single consumer in one Availability Zone",
+      "Make message processing idempotent",
+      "Configure a dead-letter queue with a redrive policy"
+    ],
+    "answer": [
+      2,
+      4,
+      5
+    ],
+    "explanation": "Dead-letter queues, idempotent processing, and multi-AZ consumers make queue processing reliable and safe against duplicates and failures. Single consumers, disabled retries, and in-memory-only handling reduce reliability.",
+    "keyTakeaway": "DLQs, idempotency, and multi-AZ consumers make SQS processing reliable."
+  },
+  {
+    "id": 517,
+    "domain": "resilient",
+    "difficulty": "medium",
+    "question": "Which three Amazon Route 53 routing policies can improve availability or traffic distribution? (Choose three.)",
+    "options": [
+      "Subnet-based routing",
+      "Weighted routing",
+      "IAM-based routing",
+      "Failover routing with health checks",
+      "Simple routing to a single endpoint",
+      "Latency-based routing"
+    ],
+    "answer": [
+      1,
+      3,
+      5
+    ],
+    "explanation": "Failover, latency-based, and weighted routing help with availability and distribution. Simple routing targets one endpoint, and IAM/subnet routing are not Route 53 policies.",
+    "keyTakeaway": "Failover, latency, and weighted routing improve DNS availability/distribution."
+  },
+  {
+    "id": 518,
+    "domain": "performance",
+    "difficulty": "medium",
+    "question": "Which three services reduce read latency by caching data? (Choose three.)",
+    "options": [
+      "DynamoDB Accelerator (DAX) for DynamoDB",
+      "Moving data to S3 Glacier",
+      "Enabling S3 Versioning",
+      "Amazon ElastiCache in front of a database",
+      "Amazon CloudFront for cacheable content",
+      "Disabling read replicas"
+    ],
+    "answer": [
+      0,
+      3,
+      4
+    ],
+    "explanation": "CloudFront, ElastiCache, and DAX cache data to reduce latency. Versioning, Glacier, and disabling replicas do not improve read latency.",
+    "keyTakeaway": "CloudFront, ElastiCache, and DAX cache reads to cut latency."
+  },
+  {
+    "id": 519,
+    "domain": "performance",
+    "difficulty": "medium",
+    "question": "Which three actions improve read performance of a relational database? (Choose three.)",
+    "options": [
+      "Add a caching layer such as ElastiCache",
+      "Increase the backup frequency",
+      "Add read replicas and route reads to them",
+      "Add more resource tags",
+      "Enable Multi-AZ to serve reads from the standby",
+      "Create appropriate indexes for common queries"
+    ],
+    "answer": [
+      0,
+      2,
+      5
+    ],
+    "explanation": "Read replicas, caching, and good indexing improve read performance. Multi-AZ is for availability (the standby is not readable), and backups and tags do not affect performance.",
+    "keyTakeaway": "Read replicas, caching, and indexes speed up database reads."
+  },
+  {
+    "id": 520,
+    "domain": "performance",
+    "difficulty": "hard",
+    "question": "Which three choices improve Amazon EBS or storage performance for demanding workloads? (Choose three.)",
+    "options": [
+      "Disable enhanced networking on the instance",
+      "Use gp3 with independently provisioned IOPS and throughput",
+      "Consolidate everything onto one small volume",
+      "Use Cold HDD (sc1) for random-IOPS databases",
+      "Use EBS-optimized instances for dedicated storage bandwidth",
+      "Use Provisioned IOPS SSD (io2) for high, consistent IOPS"
+    ],
+    "answer": [
+      1,
+      4,
+      5
+    ],
+    "explanation": "io2, gp3 with provisioned performance, and EBS-optimized instances raise storage performance. Cold HDD suits throughput not IOPS, a single small volume limits performance, and enhanced networking is unrelated but should stay enabled.",
+    "keyTakeaway": "io2, gp3 provisioning, and EBS-optimized instances boost storage performance."
+  },
+  {
+    "id": 521,
+    "domain": "performance",
+    "difficulty": "medium",
+    "question": "Which three help an application handle sudden traffic spikes gracefully? (Choose three.)",
+    "options": [
+      "A single fixed-size instance",
+      "Scaling vertically only during a maintenance window",
+      "An Elastic Load Balancer distributing across AZs",
+      "An Auto Scaling group with a target tracking policy",
+      "A caching layer to offload repeated work from the origin",
+      "Manual scaling reviewed once per day"
+    ],
+    "answer": [
+      2,
+      3,
+      4
+    ],
+    "explanation": "Auto Scaling, load balancing, and caching absorb and distribute spikes automatically. Fixed capacity, manual scaling, and infrequent vertical scaling cannot react to sudden load.",
+    "keyTakeaway": "Auto Scaling, load balancing, and caching absorb traffic spikes."
+  },
+  {
+    "id": 522,
+    "domain": "performance",
+    "difficulty": "medium",
+    "question": "Which three can reduce latency for a globally distributed user base? (Choose three.)",
+    "options": [
+      "AWS Global Accelerator for TCP/UDP traffic",
+      "Amazon CloudFront edge caching",
+      "A single-Region public IP for all users",
+      "Amazon Route 53 latency-based routing",
+      "Routing all user traffic through one NAT gateway",
+      "Enabling S3 Versioning"
+    ],
+    "answer": [
+      0,
+      1,
+      3
+    ],
+    "explanation": "CloudFront, Global Accelerator, and latency-based routing bring users to the nearest or fastest endpoint. A single Region, a shared NAT gateway, and versioning do not reduce global latency.",
+    "keyTakeaway": "CloudFront, Global Accelerator, and latency routing cut global latency."
+  },
+  {
+    "id": 523,
+    "domain": "performance",
+    "difficulty": "hard",
+    "question": "Which three actions reduce AWS Lambda latency and cold starts for a latency-sensitive API? (Choose three.)",
+    "options": [
+      "Enable provisioned concurrency",
+      "Add many environment variables to preload data",
+      "Place the function in a VPC without any VPC endpoints",
+      "Increase the function timeout",
+      "Allocate more memory, which also increases CPU",
+      "Reduce the deployment package size and avoid heavy initialization"
+    ],
+    "answer": [
+      0,
+      4,
+      5
+    ],
+    "explanation": "Provisioned concurrency, lighter packages/init, and more memory (hence CPU) reduce latency and cold-start impact. Timeouts, extra env vars, and a VPC without endpoints do not help and can hurt.",
+    "keyTakeaway": "Provisioned concurrency, lean init, and right memory reduce Lambda latency."
+  },
+  {
+    "id": 524,
+    "domain": "performance",
+    "difficulty": "medium",
+    "question": "Which three techniques improve Amazon Athena query performance on data in S3? (Choose three.)",
+    "options": [
+      "Store the data as uncompressed CSV",
+      "Query with SELECT star and no filters",
+      "Compress the data to reduce bytes scanned",
+      "Store the data in a columnar format such as Parquet",
+      "Partition the data by commonly filtered columns",
+      "Keep millions of tiny files unconsolidated"
+    ],
+    "answer": [
+      2,
+      3,
+      4
+    ],
+    "explanation": "Partitioning, columnar formats, and compression reduce data scanned, improving speed and cost. Uncompressed CSV, unfiltered queries, and many tiny files increase scanning.",
+    "keyTakeaway": "Partition, use columnar formats, and compress to speed up Athena."
+  },
+  {
+    "id": 525,
+    "domain": "cost",
+    "difficulty": "medium",
+    "question": "Which three actions reduce Amazon EC2 compute cost? (Choose three.)",
+    "options": [
+      "Right-size instances based on utilization",
+      "Use Spot Instances for interruption-tolerant workloads",
+      "Use Dedicated Hosts when not required for licensing",
+      "Use Savings Plans for steady, predictable usage",
+      "Leave idle instances running to avoid restart time",
+      "Run everything On-Demand at peak size continuously"
+    ],
+    "answer": [
+      0,
+      1,
+      3
+    ],
+    "explanation": "Savings Plans, Spot, and right-sizing directly lower compute cost. Always-on peak On-Demand, unnecessary Dedicated Hosts, and idle instances increase cost.",
+    "keyTakeaway": "Savings Plans, Spot, and right-sizing cut EC2 cost."
+  },
+  {
+    "id": 526,
+    "domain": "cost",
+    "difficulty": "medium",
+    "question": "Which three actions reduce Amazon S3 storage cost? (Choose three.)",
+    "options": [
+      "Use S3 Intelligent-Tiering for unpredictable access patterns",
+      "Keep all objects in S3 Standard indefinitely",
+      "Add a lifecycle rule to abort incomplete multipart uploads",
+      "Enable versioning to keep many copies of every object",
+      "Use lifecycle rules to transition objects to IA or Glacier tiers",
+      "Enable Transfer Acceleration on the bucket"
+    ],
+    "answer": [
+      0,
+      2,
+      4
+    ],
+    "explanation": "Lifecycle transitions, Intelligent-Tiering, and cleaning up incomplete multipart uploads lower storage cost. Versioning adds copies, Transfer Acceleration adds cost, and Standard-forever is expensive for cold data.",
+    "keyTakeaway": "Lifecycle tiering, Intelligent-Tiering, and multipart cleanup cut S3 cost."
+  },
+  {
+    "id": 527,
+    "domain": "cost",
+    "difficulty": "hard",
+    "question": "Which three actions reduce AWS data transfer costs? (Choose three.)",
+    "options": [
+      "Use gateway VPC endpoints for S3 and DynamoDB to avoid NAT charges",
+      "Route all internal traffic through NAT gateways",
+      "Move data between Regions frequently for redundancy",
+      "Keep chatty components within the same Availability Zone where feasible",
+      "Serve content through Amazon CloudFront",
+      "Use public IP addresses for internal instance-to-instance traffic"
+    ],
+    "answer": [
+      0,
+      3,
+      4
+    ],
+    "explanation": "CloudFront, gateway endpoints, and same-AZ private traffic reduce transfer cost. NAT gateways, public-IP internal traffic, and frequent cross-Region transfer increase it.",
+    "keyTakeaway": "CloudFront, gateway endpoints, and same-AZ traffic reduce transfer cost."
+  },
+  {
+    "id": 528,
+    "domain": "cost",
+    "difficulty": "medium",
+    "question": "Which three tools help monitor and control AWS spending? (Choose three.)",
+    "options": [
+      "Ignoring the monthly bill",
+      "Disabling billing to avoid charges",
+      "AWS Budgets with threshold alerts",
+      "Cost allocation tags for chargeback reporting",
+      "AWS Cost Explorer for spend analysis",
+      "Using only the account root user for everything"
+    ],
+    "answer": [
+      2,
+      3,
+      4
+    ],
+    "explanation": "Budgets, Cost Explorer, and cost allocation tags provide monitoring, analysis, and attribution of spend. The other choices do not control cost.",
+    "keyTakeaway": "Budgets, Cost Explorer, and cost allocation tags govern spend."
+  },
+  {
+    "id": 529,
+    "domain": "cost",
+    "difficulty": "medium",
+    "question": "Which three actions eliminate wasted AWS spend from unused resources? (Choose three.)",
+    "options": [
+      "Delete unattached EBS volumes and outdated snapshots after verifying they are unneeded",
+      "Release Elastic IP addresses that are not associated with a running instance",
+      "Leave idle resources running in case they are needed later",
+      "Remove idle load balancers that serve no targets",
+      "Over-provision all resources for peak just in case",
+      "Keep every snapshot forever for safety"
+    ],
+    "answer": [
+      0,
+      1,
+      3
+    ],
+    "explanation": "Releasing unused Elastic IPs, deleting unattached volumes/old snapshots, and removing idle load balancers cut waste. Hoarding snapshots, leaving idle resources, and over-provisioning increase cost.",
+    "keyTakeaway": "Release unused EIPs, delete orphaned volumes/snapshots, and remove idle LBs."
+  },
+  {
+    "id": 530,
+    "domain": "cost",
+    "difficulty": "hard",
+    "question": "Which three options reduce cost for workloads with variable or intermittent load? (Choose three.)",
+    "options": [
+      "AWS Fargate Spot for fault-tolerant container tasks",
+      "Amazon Aurora Serverless for intermittent database load",
+      "Always-on dedicated EC2 instances sized for peak",
+      "Provisioning maximum capacity 24/7",
+      "AWS Lambda for infrequent, event-driven work",
+      "Dedicated Hosts for development environments"
+    ],
+    "answer": [
+      0,
+      1,
+      4
+    ],
+    "explanation": "Fargate Spot, Lambda, and Aurora Serverless scale with demand (even to zero) and bill for usage, ideal for variable load. Always-on peak provisioning and Dedicated Hosts waste money when idle.",
+    "keyTakeaway": "Fargate Spot, Lambda, and Aurora Serverless fit variable, intermittent load."
   }
 ]
