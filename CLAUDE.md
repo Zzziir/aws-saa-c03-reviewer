@@ -2,28 +2,32 @@
 
 # SAA-C03 Reviewer — Lance's personal AWS exam trainer
 
-A Next.js app that helps Lance prepare for the **AWS Certified Solutions Architect – Associate (SAA-C03)** exam. Web + mobile (responsive). Local-first now; a Supabase database and git remote come later.
+A Next.js app that helps Lance prepare for the **AWS Certified Solutions Architect – Associate (SAA-C03)** exam. Web + mobile (responsive), multi-user. **Supabase-backed** (email/password auth + per-user progress), git remote on GitHub (`Zzziir/aws-saa-c03-reviewer`), **deployed on Vercel** (`aws-saa-c03-reviewer.vercel.app`, auto-deploys on push to `main`; repo is public so Vercel Hobby builds it).
 
 ## Stack
 
 - **Next.js 16** (App Router, Turbopack) · **React 19** · **TypeScript**
 - **Tailwind CSS v4** + **shadcn/ui** (note: this shadcn version is built on **Base UI** `@base-ui/react`, not Radix — `Button` has no `asChild`; use `buttonVariants` on a `<Link>`, or Base UI's `render` prop)
-- **framer-motion** for motion, **zustand** (+ persist to `localStorage`) for state
+- **framer-motion** for motion, **zustand** for state (synced to Supabase per signed-in user via `lib/db/progress.ts`; hydrated on sign-in)
 - **lucide-react** icons
+- **@supabase/ssr** for auth (cookie-based sessions; route protection in `proxy.ts` → `lib/supabase/middleware.ts`)
 
 Design language ports the original single-file prototype: AWS-orange (`--brand #ff9900`) on ink, Space Grotesk / Inter / JetBrains Mono. Motion follows the Emil Kowalski + Impeccable skills (custom easings in `globals.css`, `transform`/`opacity` only, `prefers-reduced-motion` respected, short purposeful durations).
 
 ## Architecture
 
-- `lib/questions.data.json` — **200 questions** (source of truth), extracted from the original `../aws-saa-c03-reviewer (2).html` prototype. Fields: `id, domain, difficulty, question, options[], answer (number | number[]), explanation, keyTakeaway`.
-- `lib/questions.ts` — typed access, `DOMAIN_META`, `DIFFICULTY_META`, `PASS_PCT = 72`, `countAvailable()`.
-- `lib/types.ts` — `Question`, `SessionConfig`, `ActiveSession`, `Attempt`, etc.
+- `lib/questions.data.json` — **500 questions** (source of truth): the original 200 (from the `../aws-saa-c03-reviewer (2).html` prototype) + 300 added later (ids 201–500, scenario-heavy, original-authored). Fields: `id, domain, difficulty, question, options[], answer (number | number[]), explanation, keyTakeaway`. Domain mix follows exam weights.
+- `lib/topics.ts` — fine-grained AWS service/**topic taxonomy** (22 topics across the 4 domains): `TopicSlug`, `TOPICS`, `TOPIC_META`, `TOPICS_BY_DOMAIN`.
+- `lib/question-topics.ts` — **generated** map of `questionId → TopicSlug` (one topic per question). Topic is attached to each `Question` at load in `lib/questions.ts`. (Generator + tag scripts live in a scratchpad, not the repo; keyword-based with a few hand overrides.)
+- `lib/questions.ts` — typed access, `DOMAIN_META`, `DIFFICULTY_META`, `PASS_PCT = 72`, `countAvailable()`; attaches `topic` to each question.
+- `lib/types.ts` — `Question` (now includes `topic`), `SessionConfig`, `ActiveSession`, `Attempt`, etc.
 - `lib/session-utils.ts` — pure logic: `buildQuestionIds` (filter by difficulty/domain + shuffle), scoring (`isSelectionCorrect`, single & multi-answer), `finalizeAttempt`, timer math (`liveElapsed`, `remainingSec`), formatters.
-- `lib/analytics.ts` — aggregates history into domain/difficulty mastery, score series, consistency, weakest domain.
-- `lib/store.ts` — zustand store persisted to `localStorage` (`saa-reviewer-v1`): `settings`, resumable `active` session, `history`, global `flaggedIds`. Gate client UI on `useHydrated()` to avoid SSR mismatch.
+- `lib/analytics.ts` — aggregates history into domain/difficulty mastery, score series, consistency, weakest domain; plus **per-topic** stats (`computeTopicStats`, `classifyTopics`) and the weighted **suggested-set** builder (`buildSuggestedSet`). Thresholds: strength ≥80%, weakness <60%, min 5 answered.
+- `lib/store.ts` — zustand store **synced to Supabase** (not localStorage): `settings`, resumable `active` session, `history`, `flaggedIds`. Writes go through `lib/db/progress.ts` (debounced); `record_attempt` RPC records finished attempts. Gate client UI on `useHydrated()` to avoid SSR mismatch.
+- `lib/db/progress.ts` — Supabase data layer: load/save state, `recordAttempt`, `fetchLeaderboard`, `saveExamDate`, flags.
 
 ### Routes
-`/` home dashboard · `/practice` setup · `/session` runner (own chrome; nav hidden) · `/results/[id]` · `/history` · `/analytics` · `/flagged` · `/services` cheat-sheet.
+`/` home dashboard · `/practice` setup · `/session` runner (own chrome; nav hidden) · `/results/[id]` · `/history` · `/analytics` · `/flagged` · `/services` cheat-sheet · `/login` · `/signup` · `/auth/confirm` (email-confirmation handler: accepts both PKCE `?code=` and `token_hash`). Non-auth routes require a session (enforced in the proxy/middleware).
 
 ## Domains & difficulty
 Domains: `secure` (30%), `resilient` (26%), `performance` (24%), `cost` (20%). Difficulty: `easy | medium | hard`; setup filter also has **Mixed** (all). Difficulty is a **pool filter** (Hard = only hard questions), per Lance's choice.
@@ -35,6 +39,13 @@ Domains: `secure` (30%), `resilient` (26%), `performance` (24%), `cost` (20%). D
 - Two modes: **Reviewer** (instant per-question feedback, green/red) and **Exam** (score + full review only at the end).
 - Question count 5–65 in steps of 5; timer default 2h, adjustable, pausable in both modes; questions randomized; progress persisted; end screen shows score, per-question review dropdown with highlighted corrections, duration, date; history + analytics pages.
 
+## Personalized home features
+Home (`components/home/`) shows, per signed-in user:
+- **Exam countdown** (`exam-countdown.tsx`) — editable via a pop-out calendar. Reads `user.user_metadata.target_exam_date`; on edit writes both auth metadata and `profiles.target_exam_date`. Also collected at signup.
+- **Strengths & weaknesses** (`skill-breakdown.tsx`) — per **topic** (client-side from history), strengths ≥80% / weaknesses <60% (min 5 answered).
+- **Suggested exam set** — weighted mix (~65% weak / 20% developing / 15% maintain); launches via `startFromQuestions`.
+- **Leaderboard** (`leaderboard.tsx`) — cross-user, via the `get_leaderboard()` RPC. **Streak** = consecutive **Asia/Manila** days with **≥30 questions** answered; **points = correct + 10 × streak**.
+
 ## Commands
 ```bash
 npm run dev     # dev server (Turbopack)
@@ -45,12 +56,17 @@ npm run lint
 ## Supabase
 This project has a dedicated Supabase project. Use the **`Reviewer-supabase-mcp`** MCP server (user/global scope, connected) for all Supabase operations here — do **not** use the other `supabase-*` MCP servers (those are unrelated projects).
 - **Project ref:** `uxyikqmonjhlhhalbvte` (URL `https://uxyikqmonjhlhhalbvte.supabase.co`)
-- The MCP server is scoped to this ref and has write access (not read-only), so it can run migrations.
+- The MCP server is scoped to this ref and has write access (not read-only), so it can run migrations. Regenerate `lib/supabase/database.types.ts` after schema changes.
+- **Tables** (RLS per-user): `profiles` (incl. `target_exam_date`), `user_settings`, `questions` (500), `active_session`, `attempts`, `attempt_answers`, `flagged_questions`. `handle_new_user` trigger seeds `profiles`/`user_settings` on signup (and captures `target_exam_date` from metadata).
+- **RPCs:** `record_attempt` (inserts attempt + answers; inner-joins `questions` for `domain`/`difficulty`), `get_leaderboard` (SECURITY DEFINER, authenticated-only; cross-user aggregates + streak/points — exposes only display names + aggregates).
+- **`questions` CHECK constraints:** `options` must be a 4-element jsonb array and `answer` a non-empty jsonb array. **Seed caveat:** DB rows for questions 201–500 carry accurate `id/domain/difficulty` but *placeholder* text/options/answer — the app renders question content from the bundled JSON, never DB text; `record_attempt` only reads domain/difficulty. (Original 200 DB rows have full content.)
+- **Auth config (dashboard):** the email-confirm redirect target must be in **Auth → URL Configuration → Redirect URLs** (`http://localhost:3000/**` + the Vercel domain), else confirmation falls back to Site URL and fails.
 
 ## Not yet done / next
-- Supabase persistence (replace/augment the `localStorage` layer in `lib/store.ts`; keep the same shapes). Use the `Reviewer-supabase-mcp` server (see above).
-- Git repo + remote.
-- Optional: dark-mode toggle (tokens already defined in `globals.css`), PWA manifest for installable mobile.
+- Optional: PWA manifest for installable mobile.
+- If more questions are added, tag them (regenerate `question-topics.ts`) and seed the DB `questions` table (id/domain/difficulty are what matter).
+
+_(Done: Supabase auth + per-user persistence, git remote, Vercel deploy, dark/light theme toggle, topic-level strengths/weaknesses, weighted suggested set, streak leaderboard, editable exam date, 300 added questions.)_
 
 ---
 
