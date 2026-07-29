@@ -16,7 +16,8 @@ Design language ports the original single-file prototype: AWS-orange (`--brand #
 
 ## Architecture
 
-- `lib/questions.data.json` — **500 questions** (source of truth): the original 200 (from the `../aws-saa-c03-reviewer (2).html` prototype) + 300 added later (ids 201–500, scenario-heavy, original-authored). Fields: `id, domain, difficulty, question, options[], answer (number | number[]), explanation, keyTakeaway`. Domain mix follows exam weights.
+- `lib/questions.data.json` — **530 questions** (source of truth): the original 200 (from the `../aws-saa-c03-reviewer (2).html` prototype) + 300 added (ids 201–500, scenario-heavy, original-authored) + 30 "Choose three" (ids 501–530). Fields: `id, domain, difficulty, question, options[], answer (number | number[]), explanation, keyTakeaway`. Domain mix follows exam weights.
+  - **Multi-answer convention:** `answer` is a `number` (single) or sorted `number[]` (multi). **Option counts: single-answer = 4, "Choose two" = 5, "Choose three" = 6.** The runner renders options in stored order (no runtime shuffle), so multi-answer options are authored with the correct choices at varied indices. `isMultiAnswer` = answer array length > 1 (handles 2 or 3); scoring is an exact set match.
 - `lib/topics.ts` — fine-grained AWS service/**topic taxonomy** (22 topics across the 4 domains): `TopicSlug`, `TOPICS`, `TOPIC_META`, `TOPICS_BY_DOMAIN`.
 - `lib/question-topics.ts` — **generated** map of `questionId → TopicSlug` (one topic per question). Topic is attached to each `Question` at load in `lib/questions.ts`. (Generator + tag scripts live in a scratchpad, not the repo; keyword-based with a few hand overrides.)
 - `lib/questions.ts` — typed access, `DOMAIN_META`, `DIFFICULTY_META`, `PASS_PCT = 72`, `countAvailable()`; attaches `topic` to each question.
@@ -63,16 +64,16 @@ npm run lint
 This project has a dedicated Supabase project. Use the **`Reviewer-supabase-mcp`** MCP server (user/global scope, connected) for all Supabase operations here — do **not** use the other `supabase-*` MCP servers (those are unrelated projects).
 - **Project ref:** `uxyikqmonjhlhhalbvte` (URL `https://uxyikqmonjhlhhalbvte.supabase.co`)
 - The MCP server is scoped to this ref and has write access (not read-only), so it can run migrations. Regenerate `lib/supabase/database.types.ts` after schema changes.
-- **Tables** (RLS per-user): `profiles` (incl. `target_exam_date`), `user_settings`, `questions` (500), `active_session`, `attempts`, `attempt_answers`, `flagged_questions`. `handle_new_user` trigger seeds `profiles`/`user_settings` on signup (and captures `target_exam_date` from metadata).
+- **Tables** (RLS per-user): `profiles` (incl. `target_exam_date`), `user_settings`, `questions` (530), `active_session`, `attempts`, `attempt_answers`, `flagged_questions`. `handle_new_user` trigger seeds `profiles`/`user_settings` on signup (and captures `target_exam_date` from metadata).
 - **RPCs:** `record_attempt` (inserts attempt + answers; inner-joins `questions` for `domain`/`difficulty`), `get_leaderboard` (SECURITY DEFINER, authenticated-only; cross-user aggregates + streak/points — exposes only display names + aggregates).
-- **`questions` CHECK constraints:** `options` must be a 4-element jsonb array and `answer` a non-empty jsonb array. **Seed caveat:** DB rows for questions 201–500 carry accurate `id/domain/difficulty` but *placeholder* text/options/answer — the app renders question content from the bundled JSON, never DB text; `record_attempt` only reads domain/difficulty. (Original 200 DB rows have full content.)
+- **`questions` CHECK constraints:** `options` length must be **between 4 and 6** (relaxed from `=4` for the 5/6-option multi-answer questions) and `answer` a non-empty jsonb array. **Seed caveat:** DB rows for questions 201–530 carry accurate `id/domain/difficulty` but *placeholder* text/options/answer — the app renders question content from the bundled JSON, never DB text; `record_attempt` only reads domain/difficulty. (Original 200 DB rows have full content; the 37 retrofitted "Choose two" among them were updated in-place to 5 options.)
 - **Auth config (dashboard):** the email-confirm redirect target must be in **Auth → URL Configuration → Redirect URLs** (`http://localhost:3000/**` + the Vercel domain), else confirmation falls back to Site URL and fails.
 
 ## Not yet done / next
 - Optional: PWA manifest for installable mobile.
 - If more questions are added, tag them (regenerate `question-topics.ts`) and seed the DB `questions` table (id/domain/difficulty are what matter).
 
-_(Done: Supabase auth + per-user persistence, git remote, Vercel deploy, dark/light theme toggle (incl. in-session), topic-level strengths/weaknesses, weighted suggested set, streak leaderboard, editable exam date, 300 added questions, in-session bionic reading mode + left review drawer (removed the jump-to-question palette), header attribution "by Lance Candelaria".)_
+_(Done: Supabase auth + per-user persistence, git remote, Vercel deploy, dark/light theme toggle (incl. in-session), topic-level strengths/weaknesses, weighted suggested set, streak leaderboard, editable exam date, 300 added questions + 30 "Choose three" (530 total; multi-answer option counts standardized to 4/5/6), in-session bionic reading mode + left review drawer (removed the jump-to-question palette), header attribution "by Lance Candelaria".)_
 
 ---
 
