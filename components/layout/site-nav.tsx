@@ -98,7 +98,7 @@ export function SiteNav() {
             <BrandMark />
             <span className="hidden sm:inline">SAA-C03 Reviewer</span>
             <span className="font-mono text-[11px] font-medium tracking-[0.12em] text-white/40">
-              LANCE
+              by Lance Candelaria
             </span>
           </Link>
           <nav className="ml-auto hidden items-center gap-0.5 md:flex">
