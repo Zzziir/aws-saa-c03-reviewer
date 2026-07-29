@@ -39,6 +39,12 @@ Domains: `secure` (30%), `resilient` (26%), `performance` (24%), `cost` (20%). D
 - Two modes: **Reviewer** (instant per-question feedback, green/red) and **Exam** (score + full review only at the end).
 - Question count 5–65 in steps of 5; timer default 2h, adjustable, pausable in both modes; questions randomized; progress persisted; end screen shows score, per-question review dropdown with highlighted corrections, duration, date; history + analytics pages.
 
+## Session runner (`components/session/`)
+The live-run UI has its own dark chrome (`exam-bar.tsx`, always dark `bg-[#1e2a38]` like the main nav — the site nav is hidden on `/session`). `session-runner.tsx` orchestrates state; `question-card.tsx` renders one question.
+- **Header controls** (in `exam-bar.tsx`): timer, mode badge, a left **Review** button (opens the drawer), `answered/total`, a **theme toggle** (reuses `components/layout/theme-toggle.tsx` — toggles the session body/card between dark & light; the bar itself stays dark), a **Bionic** toggle, Pause, and Submit. (The old grid "Jump to question" palette was **removed** — the drawer replaces it.)
+- **Bionic reading mode** (`bionic-text.tsx`) — toggleable reading aid that bolds each word's leading ~40% (fixation) across the question, options, explanation, and key takeaway. Preference is **device-local** (localStorage key `saa:bionic`, read via `useSyncExternalStore` — deliberately *not* in the Supabase-synced settings, since it's a per-device aid). `BionicText` bolds via font-weight only (inherits color) so it works inside colored text like the key-takeaway.
+- **Review drawer** (`question-drawer.tsx`) — left slide-in listing every question so the user can go **back** to review earlier answers. **Answered** questions jump on click; **unanswered/unreached** ones are **locked** (disabled, dimmed, lock icon) and show a `—` dash instead of the question text (so upcoming questions aren't previewed). **Flagged** questions get a "Flagged" pill. Keyboard shortcuts are suppressed while the drawer (or submit-confirm) is open.
+
 ## Personalized home features
 Home (`components/home/`) shows, per signed-in user:
 - **Exam countdown** (`exam-countdown.tsx`) — editable via a pop-out calendar. Reads `user.user_metadata.target_exam_date`; on edit writes both auth metadata and `profiles.target_exam_date`. Also collected at signup.
@@ -66,7 +72,7 @@ This project has a dedicated Supabase project. Use the **`Reviewer-supabase-mcp`
 - Optional: PWA manifest for installable mobile.
 - If more questions are added, tag them (regenerate `question-topics.ts`) and seed the DB `questions` table (id/domain/difficulty are what matter).
 
-_(Done: Supabase auth + per-user persistence, git remote, Vercel deploy, dark/light theme toggle, topic-level strengths/weaknesses, weighted suggested set, streak leaderboard, editable exam date, 300 added questions.)_
+_(Done: Supabase auth + per-user persistence, git remote, Vercel deploy, dark/light theme toggle (incl. in-session), topic-level strengths/weaknesses, weighted suggested set, streak leaderboard, editable exam date, 300 added questions, in-session bionic reading mode + left review drawer (removed the jump-to-question palette), header attribution "by Lance Candelaria".)_
 
 ---
 
