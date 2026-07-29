@@ -19,6 +19,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ExamBar } from "./exam-bar";
 import { QuestionCard } from "./question-card";
+import { QuestionDrawer } from "./question-drawer";
+import { useBionicPref } from "./bionic-text";
 
 export function SessionRunner() {
   const router = useRouter();
@@ -36,7 +38,9 @@ export function SessionRunner() {
   const [, forceTick] = useState(0);
   const [revealed, setRevealed] = useState<Set<number>>(new Set());
   const [palette, setPalette] = useState(false);
+  const [drawer, setDrawer] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const [bionic, toggleBionic] = useBionicPref();
   const submittingRef = useRef(false);
 
   // Redirect out if there is nothing to run (but not while we're submitting,
@@ -99,7 +103,7 @@ export function SessionRunner() {
   // Keyboard shortcuts.
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (!active || active.paused || confirm) return;
+      if (!active || active.paused || confirm || drawer || palette) return;
       if (e.key >= "1" && e.key <= "6") {
         const i = Number(e.key) - 1;
         if (q && i < q.options.length) handleSelect(i);
@@ -110,7 +114,7 @@ export function SessionRunner() {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [active, confirm, q, handleSelect, next, prev, toggleFlag, togglePause]);
+  }, [active, confirm, drawer, palette, q, handleSelect, next, prev, toggleFlag, togglePause]);
 
   if (!hydrated || !active || !q) {
     return (
@@ -138,9 +142,20 @@ export function SessionRunner() {
         index={active.index}
         total={active.questionIds.length}
         answeredCount={answeredCount}
+        bionic={bionic}
         onTogglePause={togglePause}
         onOpenPalette={() => setPalette(true)}
+        onOpenDrawer={() => setDrawer(true)}
+        onToggleBionic={toggleBionic}
         onSubmit={() => setConfirm(true)}
+      />
+
+      <QuestionDrawer
+        open={drawer}
+        onClose={() => setDrawer(false)}
+        active={active}
+        flaggedIds={flaggedIds}
+        onJump={goto}
       />
 
       <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8">
@@ -154,6 +169,7 @@ export function SessionRunner() {
             mode={mode}
             revealed={isRevealed(q)}
             flagged={flaggedIds.includes(q.id)}
+            bionic={bionic}
             onSelect={handleSelect}
             onReveal={handleReveal}
             onToggleFlag={() => toggleFlag(q.id)}

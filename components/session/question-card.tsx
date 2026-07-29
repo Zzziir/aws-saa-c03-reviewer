@@ -7,6 +7,7 @@ import { DOMAIN_META, DIFFICULTY_META } from "@/lib/questions";
 import { answerIndices, isMultiAnswer } from "@/lib/session-utils";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { BionicText } from "./bionic-text";
 
 const LETTERS = ["A", "B", "C", "D", "E", "F"];
 
@@ -24,6 +25,7 @@ export function QuestionCard({
   mode,
   revealed,
   flagged,
+  bionic,
   onSelect,
   onReveal,
   onToggleFlag,
@@ -35,6 +37,7 @@ export function QuestionCard({
   mode: Mode;
   revealed: boolean;
   flagged: boolean;
+  bionic: boolean;
   onSelect: (i: number) => void;
   onReveal: () => void;
   onToggleFlag: () => void;
@@ -97,7 +100,7 @@ export function QuestionCard({
       </div>
 
       <h2 className="text-[16.5px] font-medium leading-relaxed sm:text-[17.5px]">
-        {question.question}
+        <BionicText text={question.question} active={bionic} />
       </h2>
 
       <div className="mt-5 flex flex-col gap-2.5">
@@ -150,7 +153,7 @@ export function QuestionCard({
                 )}
               </span>
               <span className="pt-0.5 text-[14.5px] leading-relaxed">
-                {opt}
+                <BionicText text={opt} active={bionic} />
               </span>
             </button>
           );
@@ -204,12 +207,12 @@ export function QuestionCard({
                 )}
               </div>
               <p className="text-[13.5px] leading-relaxed text-foreground/90">
-                {question.explanation}
+                <BionicText text={question.explanation} active={bionic} />
               </p>
               {question.keyTakeaway && (
                 <p className="mt-3 flex items-start gap-2 rounded-lg bg-brand-tint px-3 py-2 font-mono text-[11.5px] font-medium leading-relaxed text-brand-deep">
                   <Lightbulb className="mt-0.5 size-3.5 shrink-0" />
-                  {question.keyTakeaway}
+                  <BionicText text={question.keyTakeaway} active={bionic} />
                 </p>
               )}
             </div>
