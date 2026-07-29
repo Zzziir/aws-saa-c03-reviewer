@@ -1,3 +1,5 @@
+import type { TopicSlug } from "./topics";
+
 export type Domain = "secure" | "resilient" | "performance" | "cost";
 export type Difficulty = "easy" | "medium" | "hard";
 export type Mode = "reviewer" | "exam";
@@ -6,6 +8,8 @@ export interface Question {
   id: number;
   domain: Domain;
   difficulty: Difficulty;
+  /** Fine-grained AWS service/topic (see lib/topics.ts). Attached at load. */
+  topic: TopicSlug;
   question: string;
   options: string[];
   /** Index (single-answer) or sorted indices (multi-answer) of the correct option(s). */

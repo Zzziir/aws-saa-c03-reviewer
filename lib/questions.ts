@@ -1,7 +1,14 @@
 import type { Domain, Difficulty, Question } from "./types";
 import raw from "./questions.data.json";
+import { QUESTION_TOPICS } from "./question-topics";
 
-export const QUESTIONS = raw as Question[];
+/** Source questions carry everything but `topic`, which we attach from the map. */
+type RawQuestion = Omit<Question, "topic">;
+
+export const QUESTIONS: Question[] = (raw as RawQuestion[]).map((q) => ({
+  ...q,
+  topic: QUESTION_TOPICS[q.id],
+}));
 
 export const PASS_PCT = 72;
 

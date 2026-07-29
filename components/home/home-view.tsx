@@ -22,6 +22,9 @@ import { QUESTIONS, PASS_PCT, DOMAIN_META } from "@/lib/questions";
 import { formatDuration, formatDate } from "@/lib/session-utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Donut } from "@/components/charts/donut";
+import { ExamCountdown } from "@/components/home/exam-countdown";
+import { SkillBreakdown } from "@/components/home/skill-breakdown";
+import { Leaderboard } from "@/components/home/leaderboard";
 import { cn } from "@/lib/utils";
 import type { SessionConfig } from "@/lib/types";
 
@@ -130,8 +133,9 @@ export function HomeView() {
             </div>
           </div>
 
-          {/* Readiness ring */}
-          <div className="flex shrink-0 items-center justify-center">
+          {/* Exam countdown + readiness ring */}
+          <div className="flex shrink-0 flex-col items-center gap-4 sm:items-end">
+            <ExamCountdown />
             <Donut
               segments={[
                 { value: readiness, color: readinessColor, label: "Readiness" },
@@ -199,6 +203,9 @@ export function HomeView() {
           value={hydrated ? String(flaggedIds.length) : "—"}
         />
       </div>
+
+      {/* Strengths, weaknesses & suggested set */}
+      <SkillBreakdown />
 
       {/* Quick start tiles */}
       <div>
@@ -374,6 +381,9 @@ export function HomeView() {
           )}
         </div>
       </div>
+
+      {/* Leaderboard */}
+      <Leaderboard />
     </div>
   );
 }

@@ -193,6 +193,7 @@ export type Database = {
           first_name: string | null
           id: string
           last_name: string | null
+          target_exam_date: string | null
           updated_at: string
         }
         Insert: {
@@ -200,6 +201,7 @@ export type Database = {
           first_name?: string | null
           id: string
           last_name?: string | null
+          target_exam_date?: string | null
           updated_at?: string
         }
         Update: {
@@ -207,6 +209,7 @@ export type Database = {
           first_name?: string | null
           id?: string
           last_name?: string | null
+          target_exam_date?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -282,6 +285,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_leaderboard: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          user_id: string
+          display_name: string
+          points: number
+          streak: number
+          questions: number
+          correct: number
+          accuracy: number
+          is_me: boolean
+        }[]
+      }
       record_attempt: {
         Args: {
           p_answers: Json

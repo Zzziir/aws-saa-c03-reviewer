@@ -6,7 +6,7 @@ import type {
   Attempt,
   SessionConfig,
 } from "@/lib/types";
-import type { Json } from "@/lib/supabase/database.types";
+import type { Database, Json } from "@/lib/supabase/database.types";
 
 /** Snapshot of everything persisted for a user, in the store's own shapes. */
 export interface UserState {
@@ -234,6 +234,28 @@ export async function clearHistory(): Promise<void> {
     .from("attempts")
     .delete()
     .eq("user_id", userId);
+}
+
+// --- leaderboard & profile ---------------------------------------------------
+
+export type LeaderboardRow =
+  Database["public"]["Functions"]["get_leaderboard"]["Returns"][number];
+
+/** Cross-user leaderboard (points + streak + accuracy). Server-computed. */
+export async function fetchLeaderboard(): Promise<LeaderboardRow[]> {
+  const { data, error } = await getSupabaseBrowserClient().rpc("get_leaderboard");
+  if (error) return [];
+  return data ?? [];
+}
+
+/** Persist the user's target exam date to their profile (canonical store). */
+export async function saveExamDate(date: string | null): Promise<void> {
+  const userId = await requireUserId();
+  if (!userId) return;
+  await getSupabaseBrowserClient()
+    .from("profiles")
+    .update({ target_exam_date: date, updated_at: new Date().toISOString() })
+    .eq("id", userId);
 }
 
 // --- flags -------------------------------------------------------------------
