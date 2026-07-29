@@ -3,19 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Pause,
-  X,
-  Bookmark,
-  Check,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Check } from "lucide-react";
 import { useStore, useHydrated } from "@/lib/store";
 import { getQuestion } from "@/lib/questions";
 import { remainingSec, isMultiAnswer } from "@/lib/session-utils";
 import type { Question } from "@/lib/types";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ExamBar } from "./exam-bar";
 import { QuestionCard } from "./question-card";
@@ -37,7 +29,6 @@ export function SessionRunner() {
 
   const [, forceTick] = useState(0);
   const [revealed, setRevealed] = useState<Set<number>>(new Set());
-  const [palette, setPalette] = useState(false);
   const [drawer, setDrawer] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [bionic, toggleBionic] = useBionicPref();
@@ -103,7 +94,7 @@ export function SessionRunner() {
   // Keyboard shortcuts.
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (!active || active.paused || confirm || drawer || palette) return;
+      if (!active || active.paused || confirm || drawer) return;
       if (e.key >= "1" && e.key <= "6") {
         const i = Number(e.key) - 1;
         if (q && i < q.options.length) handleSelect(i);
@@ -114,7 +105,7 @@ export function SessionRunner() {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [active, confirm, drawer, palette, q, handleSelect, next, prev, toggleFlag, togglePause]);
+  }, [active, confirm, drawer, q, handleSelect, next, prev, toggleFlag, togglePause]);
 
   if (!hydrated || !active || !q) {
     return (
@@ -144,7 +135,6 @@ export function SessionRunner() {
         answeredCount={answeredCount}
         bionic={bionic}
         onTogglePause={togglePause}
-        onOpenPalette={() => setPalette(true)}
         onOpenDrawer={() => setDrawer(true)}
         onToggleBionic={toggleBionic}
         onSubmit={() => setConfirm(true)}
@@ -203,71 +193,6 @@ export function SessionRunner() {
           )}
         </div>
       </div>
-
-      {/* Palette */}
-      <AnimatePresence>
-        {palette && (
-          <Overlay onClose={() => setPalette(false)}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: 8 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.97, y: 6 }}
-              transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md rounded-2xl border border-border bg-card p-5 shadow-xl"
-            >
-              <div className="mb-3 flex items-center justify-between">
-                <h3 className="font-semibold">Jump to question</h3>
-                <button
-                  onClick={() => setPalette(false)}
-                  className="rounded-md p-1 text-muted-foreground hover:bg-secondary"
-                >
-                  <X className="size-4" />
-                </button>
-              </div>
-              <div className="grid grid-cols-7 gap-2 sm:grid-cols-8">
-                {active.questionIds.map((id, i) => {
-                  const a = active.answers[id];
-                  const answered = (a?.selected.length ?? 0) > 0;
-                  const flag = flaggedIds.includes(id);
-                  return (
-                    <button
-                      key={id}
-                      onClick={() => {
-                        goto(i);
-                        setPalette(false);
-                      }}
-                      className={cn(
-                        "relative grid aspect-square place-items-center rounded-lg border text-[12px] font-semibold transition-colors active:scale-95",
-                        i === active.index
-                          ? "border-brand bg-brand text-ink"
-                          : answered
-                            ? "border-ok/40 bg-ok-tint text-ok"
-                            : "border-border bg-card text-muted-foreground hover:border-muted-foreground/40",
-                      )}
-                    >
-                      {i + 1}
-                      {flag && (
-                        <Bookmark className="absolute right-0.5 top-0.5 size-2.5 fill-brand-deep text-brand-deep" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="mt-4 flex items-center gap-4 text-[11.5px] text-muted-foreground">
-                <span className="flex items-center gap-1.5">
-                  <span className="size-2.5 rounded bg-ok-tint ring-1 ring-ok/40" />
-                  Answered
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="size-2.5 rounded bg-card ring-1 ring-border" />
-                  Unanswered
-                </span>
-              </div>
-            </motion.div>
-          </Overlay>
-        )}
-      </AnimatePresence>
 
       {/* Submit confirm */}
       <AnimatePresence>

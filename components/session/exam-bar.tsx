@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Pause,
-  Play,
-  LayoutGrid,
-  Flag,
-  PanelLeft,
-  BookOpenText,
-} from "lucide-react";
+import { Pause, Play, Flag, PanelLeft, BookOpenText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatClock } from "@/lib/session-utils";
 import type { Mode } from "@/lib/types";
@@ -22,7 +15,6 @@ export function ExamBar({
   answeredCount,
   bionic,
   onTogglePause,
-  onOpenPalette,
   onOpenDrawer,
   onToggleBionic,
   onSubmit,
@@ -36,7 +28,6 @@ export function ExamBar({
   answeredCount: number;
   bionic: boolean;
   onTogglePause: () => void;
-  onOpenPalette: () => void;
   onOpenDrawer: () => void;
   onToggleBionic: () => void;
   onSubmit: () => void;
@@ -105,15 +96,6 @@ export function ExamBar({
             )}
             <span className="hidden sm:inline">
               {paused ? "Resume" : "Pause"}
-            </span>
-          </button>
-          <button
-            onClick={onOpenPalette}
-            className="flex items-center gap-1.5 rounded-lg bg-white/10 px-2.5 py-1.5 text-[12.5px] font-semibold transition-colors hover:bg-white/20 active:scale-95"
-          >
-            <LayoutGrid className="size-3.5" />
-            <span className="hidden sm:inline">
-              {index + 1}/{total}
             </span>
           </button>
           <button
