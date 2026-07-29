@@ -4,6 +4,7 @@ import { Pause, Play, Flag, PanelLeft, BookOpenText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatClock } from "@/lib/session-utils";
 import type { Mode } from "@/lib/types";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 export function ExamBar({
   mode,
@@ -73,6 +74,7 @@ export function ExamBar({
           <span className="mr-1 hidden text-[12px] text-white/60 sm:inline">
             {answeredCount}/{total} answered
           </span>
+          <ThemeToggle className="size-8" />
           <button
             onClick={onToggleBionic}
             className={cn(
